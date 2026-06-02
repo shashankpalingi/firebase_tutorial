@@ -1,5 +1,5 @@
 import { auth } from './firebase.js';    
-import { createUserWithEmailAndPassword,signOut }
+import { createUserWithEmailAndPassword,signOut,signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 const signupForm = document.querySelector('#signup-form');
@@ -34,3 +34,18 @@ logout.addEventListener('click',(e)=>{
     })
 })
 
+// login
+const loginForm=document.querySelector('#login-form');
+loginForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    // get user info
+    const email=loginForm['login-email'].value;
+    const password=loginForm['login-password'].value;
+    signInWithEmailAndPassword(auth,email,password).then(cred=>{
+        console.log(cred.user)
+        // close the login modal and reset the form
+        const modal = document.querySelector('#modal-login');
+        M.Modal.getInstance(modal).close();
+        loginForm.reset();
+    })
+})
