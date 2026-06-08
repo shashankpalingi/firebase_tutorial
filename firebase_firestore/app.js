@@ -47,7 +47,7 @@ function renderCafe(cafeDoc){
 //       console.log(error.message);
 //   });
 
-// saving data from UI
+// saving data to firestore from UI
  form.addEventListener('submit',(e)=>{
     e.preventDefault(); 
     addDoc(collection(db,"cafes"),{
@@ -65,26 +65,20 @@ function renderCafe(cafeDoc){
  });
 
 
-// real time listener
+// real time listener (onsnapshot) for getting data 
 const q = query(
     collection(db, "cafes"),
     orderBy("city")
 );
 onSnapshot(q, (snapshot) => {
-
     snapshot.docChanges().forEach((change) => {
-
         if(change.type === "added") {
-
             renderCafe(change.doc);
-
         }
         else if(change.type === "removed") {
-
             const li = cafeList.querySelector(
                 `[data-id="${change.doc.id}"]`
             );
-
             if(li){
                 cafeList.removeChild(li);
             }
